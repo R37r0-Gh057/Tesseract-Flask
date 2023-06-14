@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <title>Extract Text From Image </title>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  </head>
+  <body>
+    <div class="nav">
+    <a href="/results" class="nav-but">RESULTS</a>
+    </div>
+    <h1 style="font-size: 30px">Extract text from Image.</h1>
+    <form action="/upload", method="post", enctype="multipart/form-data">
+      <hr>
+      <div class="formcontainer">
+      <div class="container">
+        <h1 id="first">Schedule a time to begin the extraction:</h1>
+        <br><p style="color: grey;">(Leave empty to begin immediately)</p>
+        <label for="datetime"><strong>Date & Time:</strong></label>
+        <input type="datetime-local" name="datetime"><br><br>
+        <label for="image"><strong>Upload an Image:</strong></label>
+        <div class="file-upload">
+          <div class="file-select">
+            <div class="file-select-button" id="fileName">Choose File</div>
+            <div class="file-select-name" id="noFile">No file chosen...</div> 
+            <input type="file" name="image" accept="image/png, image/jpeg" id="chooseFile">
+            <input type="text" id="tz" name="tz" hidden></input>
+          </div>
+        </div>  
+      <center><button onclick="return update_tz()" type="submit"><strong>RUN</strong></button></center>
+      </div>
+    </div>
+    </form>
+  </body>
+
+  <script>
+    function update_tz() {
+      var tz_el = document.getElementById("tz");
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+      tz_el.value = tz;
+      return true;
+    }
+  </script>
+
+  <script>
+    $('#chooseFile').bind('change', function () {
+      var filename = $("#chooseFile").val();
+      if (/^\s*$/.test(filename)) {
+        $(".file-upload").removeClass('active');
+        $("#noFile").text("No file chosen..."); 
+      }
+      else {
+        $(".file-upload").addClass('active');
+        $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+      }
+    });
+  </script>    
+</html>
